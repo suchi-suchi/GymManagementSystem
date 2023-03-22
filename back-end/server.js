@@ -152,7 +152,18 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
         console.log(error)
         res.status(500).json({message: error.message})
       }
-    });
+    })
+
+    app.get('/members/:id', async(req,res)=>{
+      try {
+        const {id} = req.params
+        const membership = await Membership.findById(id);
+        res.status(200).json(membership);
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
 
   }
   ).catch((error)=>console.log("db connection error"+error));
