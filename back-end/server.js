@@ -177,5 +177,21 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
       }
     })
 
+     //delete a membership based on _id
+    app.delete('/members/:id', async(req,res)=>{
+      try {
+        const {id} = req.params;
+        const membership = await Membership.findByIdAndDelete(id);
+        if(!membership){
+          res.status(404).json({message: `cannot find any membership with ${id}` })
+        }
+        res.status(200).json({message: `deleted membership with ${id}`});
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
+
   }
   ).catch((error)=>console.log("db connection error"+error));
