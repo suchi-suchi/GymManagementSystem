@@ -237,6 +237,17 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
       }
     })
 
+     //get only non members
+    app.get('/getnonmembers',async(req,res)=>{
+      try {
+        const users = await User.find({role: "Non Member"})
+        res.status(200).json(users)
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
     
   }
   ).catch((error) => console.log("db connection error" + error));
