@@ -248,6 +248,19 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
       }
     })
 
+        //gets a specific user based on _id
+    app.get('/user/:id',async(req,res)=>{
+      try {
+        const {id} = req.params
+        const users = await User.findById(id)
+        res.status(200).json(users)
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
+
     
   }
   ).catch((error) => console.log("db connection error" + error));
