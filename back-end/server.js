@@ -290,7 +290,30 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
       }
     })
 
-
+ // make non-member user as member 
+ app.patch('/user/updateUserMembership/',async(req,res)=>{
+  try {
+    const userId = req.body.userId
+    const months = req.body.months
+    const startDate = new Date();
+    const endDate = new Date(startDate.getTime());
+    endDate.setMonth(startDate.getMonth() + months);
+    const user = await User.findOne( { userId : userId} )
+    // console.log(startDate)
+    // console.log(endDate)
+    if(!user){
+      return res.status(404).json({ message: 'User not found' });
+    }
+    user.role = "Member"
+    user.membershipStartDate = startDate
+    user.membershipEndDate = endDate
+    await user.save();
+    res.status(200).json({ success: true, message: 'User record updated & successfully made as member.' })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({message: error.message})
+  }
+})
     
   }
   ).catch((error) => console.log("db connection error" + error));
