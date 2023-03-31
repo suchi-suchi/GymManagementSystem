@@ -327,6 +327,28 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
         res.status(500).json({message: error.message})
       }
     })
+
+     // to validate user name and password of admin
+     app.post('/admin/validate', async(req,res)=>{
+      try {
+        const givenAdminId = req.body.adminId
+        const givenPassword = req.body.password
+        const admin = await Admin.findOne( { adminId : givenAdminId } )
+        if(!admin){
+          return res.status(401).json({ login: false} )
+        }
+        if( admin.adminId == givenAdminId && admin.password == givenPassword){
+          res.status(200).json( {login: true} )
+        }else{
+          res.status(401).json({ login: false} )
+        }
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
+    
     
   }
   ).catch((error) => console.log("db connection error" + error));
