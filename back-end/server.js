@@ -359,5 +359,16 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
       }
     })
     
+    //gets a specific admin based on _id
+    app.get('/admin/:id',async(req,res)=>{
+      try {
+        const {id} = req.params
+        const admins = await Admin.findById(id)
+        res.status(200).json(admins)
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
   }
   ).catch((error) => console.log("db connection error" + error));
