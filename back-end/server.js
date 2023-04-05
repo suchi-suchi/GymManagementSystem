@@ -370,5 +370,21 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
         res.status(500).json({message: error.message})
       }
     })
+
+    //to delete a specific admin
+    app.delete('admin/:id', async(req,res)=>{
+      try {
+        const {id} = req.params
+        const admin = await Admin.findByIdAndDelete(id)
+        if(!admin){
+          res.status(404).json({message: `cannot find any admin with ${id}` })
+        }
+        res.status(200).json({message: `deleted admin with ${id}` })
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+    
   }
   ).catch((error) => console.log("db connection error" + error));
