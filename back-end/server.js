@@ -227,203 +227,219 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
     })
 
     // gets all users information
-    app.get('/user',async(req,res)=>{
+    app.get('/user', async (req, res) => {
       try {
         const users = await User.find({})
         res.status(200).json(users)
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
 
-     //get only non members
-    app.get('/getnonmembers',async(req,res)=>{
+    //get only non members
+    app.get('/getnonmembers', async (req, res) => {
       try {
-        const users = await User.find({role: "Non Member"})
+        const users = await User.find({ role: "Non Member" })
         res.status(200).json(users)
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
 
-        //gets a specific user based on _id
-    app.get('/user/:id',async(req,res)=>{
+    //gets a specific user based on _id
+    app.get('/user/:id', async (req, res) => {
       try {
-        const {id} = req.params
+        const { id } = req.params
         const users = await User.findById(id)
         res.status(200).json(users)
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
 
     //to delete a specific user
-    app.delete('user/:id', async(req,res)=>{
+    app.delete('user/:id', async (req, res) => {
       try {
-        const {id} = req.params
+        const { id } = req.params
         const user = await User.findByIdAndDelete(id)
-        if(!user){
-          res.status(404).json({message: `cannot find any user with ${id}` })
+        if (!user) {
+          res.status(404).json({ message: `cannot find any user with ${id}` })
         }
-        res.status(200).json({message: `deleted user with ${id}` })
+        res.status(200).json({ message: `deleted user with ${id}` })
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
 
     //to update a specific user details based on _id
-    app.put('/user/:id', async(req,res)=>{
+    app.put('/user/:id', async (req, res) => {
       try {
-        const {id} = req.params
-        const user = await User.findByIdAndUpdate(id,req.body)
-        if(!user){
-          res.status(404).json({message: `cannot find any user with ${id}` })
+        const { id } = req.params
+        const user = await User.findByIdAndUpdate(id, req.body)
+        if (!user) {
+          res.status(404).json({ message: `cannot find any user with ${id}` })
         }
-        res.status(200).json({message: `updated user with ${id}` })
+        res.status(200).json({ message: `updated user with ${id}` })
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
 
- // make non-member user as member 
- app.patch('/user/updateUserMembership/',async(req,res)=>{
-  try {
-    const userId = req.body.userId
-    const months = req.body.months
-    const startDate = new Date();
-    const endDate = new Date(startDate.getTime());
-    endDate.setMonth(startDate.getMonth() + months);
-    const user = await User.findOne( { userId : userId} )
-    // console.log(startDate)
-    // console.log(endDate)
-    if(!user){
-      return res.status(404).json({ message: 'User not found' });
-    }
-    user.role = "Member"
-    user.membershipStartDate = startDate
-    user.membershipEndDate = endDate
-    await user.save();
-    res.status(200).json({ success: true, message: 'User record updated & successfully made as member.' })
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({message: error.message})
-  }
-})
+    // make non-member user as member 
+    app.patch('/user/updateUserMembership/', async (req, res) => {
+      try {
+        const userId = req.body.userId
+        const months = req.body.months
+        const startDate = new Date();
+        const endDate = new Date(startDate.getTime());
+        endDate.setMonth(startDate.getMonth() + months);
+        const user = await User.findOne({ userId: userId })
+        // console.log(startDate)
+        // console.log(endDate)
+        if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+        }
+        user.role = "Member"
+        user.membershipStartDate = startDate
+        user.membershipEndDate = endDate
+        await user.save();
+        res.status(200).json({ success: true, message: 'User record updated & successfully made as member.' })
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: error.message })
+      }
+    })
 
- // ------------------------------- Admin specific endpoints -----------------------------------
+    // ------------------------------- Admin specific endpoints -----------------------------------
 
     // add admin 
-    app.post('/addAdmin',async(req,res)=>{
+    app.post('/addAdmin', async (req, res) => {
       try {
         const admin = await Admin.create(req.body)
         res.status(200).json(admin)
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
 
-     // to validate user name and password of admin
-     app.post('/admin/validate', async(req,res)=>{
+    // to validate user name and password of admin
+    app.post('/admin/validate', async (req, res) => {
       try {
         const givenAdminId = req.body.adminId
         const givenPassword = req.body.password
-        const admin = await Admin.findOne( { adminId : givenAdminId } )
-        if(!admin){
-          return res.status(401).json({ login: false} )
+        const admin = await Admin.findOne({ adminId: givenAdminId })
+        if (!admin) {
+          return res.status(401).json({ login: false })
         }
-        if( admin.adminId == givenAdminId && admin.password == givenPassword){
-          res.status(200).json( {login: true} )
-        }else{
-          res.status(401).json({ login: false} )
+        if (admin.adminId == givenAdminId && admin.password == givenPassword) {
+          res.status(200).json({ login: true })
+        } else {
+          res.status(401).json({ login: false })
         }
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
 
     // gets all admins information
-    app.get('/admin',async(req,res)=>{
+    app.get('/admin', async (req, res) => {
       try {
         const admins = await Admin.find({})
         res.status(200).json(admins)
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
-    
+
     //gets a specific admin based on _id
-    app.get('/admin/:id',async(req,res)=>{
+    app.get('/admin/:id', async (req, res) => {
       try {
-        const {id} = req.params
+        const { id } = req.params
         const admins = await Admin.findById(id)
         res.status(200).json(admins)
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
 
     //to delete a specific admin
-    app.delete('admin/:id', async(req,res)=>{
+    app.delete('admin/:id', async (req, res) => {
       try {
-        const {id} = req.params
+        const { id } = req.params
         const admin = await Admin.findByIdAndDelete(id)
-        if(!admin){
-          res.status(404).json({message: `cannot find any admin with ${id}` })
+        if (!admin) {
+          res.status(404).json({ message: `cannot find any admin with ${id}` })
         }
-        res.status(200).json({message: `deleted admin with ${id}` })
+        res.status(200).json({ message: `deleted admin with ${id}` })
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
     //to update a specific admin details
-    app.put('/admin/:id', async(req,res)=>{
+    app.put('/admin/:id', async (req, res) => {
       try {
-        const {id} = req.params
-        const admin = await Admin.findByIdAndUpdate(id,req.body)
-        if(!admin){
-          res.status(404).json({message: `cannot find any admin with ${id}` })
+        const { id } = req.params
+        const admin = await Admin.findByIdAndUpdate(id, req.body)
+        if (!admin) {
+          res.status(404).json({ message: `cannot find any admin with ${id}` })
         }
-        res.status(200).json({message: `updated admin with ${id}` })
+        res.status(200).json({ message: `updated admin with ${id}` })
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
-    
-  // ------------------------------- Activity specific endpoints -----------------------------------
+
+    // ------------------------------- Activity specific endpoints -----------------------------------
 
     // add activity 
-    app.post('/addActivity',async(req,res)=>{
+    app.post('/addActivity', async (req, res) => {
       try {
         const activity = await Activity.create(req.body)
         res.status(200).json(activity)
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
 
     // gets all activitys information
-    app.get('/activity',async(req,res)=>{
+    app.get('/activity', async (req, res) => {
       try {
         const activitys = await Activity.find({})
         res.status(200).json(activitys)
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
-    
+
+    // get activity id based on activity name
+    app.get('/activityByName/:name', async (req, res) => {
+      try {
+        const activityName = req.params.name;
+        // console.log(activityName)
+        const activityId = await Activity.findOne({ activityname: activityName })
+        if (!activityId) {
+          return res.status(404).json({ message: 'Activity not found' });
+        }
+        res.status(200).json(activityId);
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: error.message })
+      }
+    })
+
 
   }
   ).catch((error) => console.log("db connection error" + error));
