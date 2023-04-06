@@ -413,5 +413,17 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
       }
     })
 
+    // gets all activitys information
+    app.get('/activity',async(req,res)=>{
+      try {
+        const activitys = await Activity.find({})
+        res.status(200).json(activitys)
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+    
+
   }
   ).catch((error) => console.log("db connection error" + error));
