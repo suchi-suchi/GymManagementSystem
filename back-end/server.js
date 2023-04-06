@@ -451,5 +451,21 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
         res.status(500).json({message: error.message})
       }
     })
+
+     //to delete a specific activity
+    app.delete('activity/:id', async(req,res)=>{
+    try {
+      const {id} = req.params
+      const activity = await Activity.findByIdAndDelete(id)
+      if(!activity){
+        res.status(404).json({message: `cannot find any activity with ${id}` })
+      }
+      res.status(200).json({message: `deleted activity with ${id}` })
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({message: error.message})
+    }
+    })
+
   }
   ).catch((error) => console.log("db connection error" + error));
