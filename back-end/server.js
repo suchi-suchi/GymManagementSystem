@@ -440,6 +440,16 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
       }
     })
 
-
+   //gets a specific activity based on _id
+    app.get('/activity/:id',async(req,res)=>{
+      try {
+        const {id} = req.params
+        const activitys = await Activity.findById(id)
+        res.status(200).json(activitys)
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
   }
   ).catch((error) => console.log("db connection error" + error));
