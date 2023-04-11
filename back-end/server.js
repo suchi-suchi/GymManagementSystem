@@ -532,5 +532,67 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
       }
     })
 
+    //machine hours spent
+    app.post('/machineHoursSpent', async(req,res)=>{
+      const userId = req.body.userId
+      const startDate = new Date(req.body.startDate)// need to check if i get a data object or just in string format
+      const endDate = new Date(req.body.endDate)
+      const machineToHourMap = new Map()
+      const promises = []
+      machineSet.forEach((machine)=>{
+        const promise = LogMachineTracking.find({userId: userId , machineName: machine}).then((logMachinetracking)=>{
+          logMachinetracking.forEach((logMachine)=>{
+            // console.log(type(logMachine.startTime),type(startDate))
+            // console.log(logMachine.endTime,endDate)
+            if( (logMachine.startTime >= startDate && logMachine.endTime <= endDate)){
+              if( machineToHourMap.has(logMachine.machineName) ){
+                const hrs = machineToHourMap.get(logMachine.machineName) +  (logMachine.endTime-logMachine.startTime)/(1000 * 60 * 60)
+                machineToHourMap.set(logMachine.machineName,hrs) 
+              }else{
+                const ihrs =  (logMachine.endTime-logMachine.startTime)/(1000 * 60 * 60)
+                machineToHourMap.set(logMachine.machineName,ihrs) 
+                // console.log(machineToHourMap)
+              }
+            }
+          })
+        })
+        promises.push(promise)
+      })
+      Promise.all(promises).then(()=>{
+        // console.log("map")
+        // console.log(machineToHourMap)
+        const result = { resJson : []}
+        machineToHourMap.forEach((Hrs,machineName)=>{
+          const caloriesBurnt = machineCaloriesMap.get(machineName)*Hrs
+          result.resJson.push({ machineName : machineName, hoursSpent : Hrs, caloriesBurnt : caloriesBurnt })
+        })
+        res.status(200).json(result.resJson)
+      })
+      
+      
+  })
+
+  // return future classes (one week) based on location
+  app.get('/futureClasses/:location', async (req,res)=>{
+    try {
+      const location = req.params.location
+      const classes = await Class.find( {location: location } )
+      const response = { jsonres: [] }
+      const currentDate = new Date();
+      const nextWeek = new Date();
+      nextWeek.setDate(nextWeek.getDate() + 7);
+      classes.forEach( (classe)=>{
+        if( classe.startTime >= currentDate && classe.endTime <= nextWeek){
+          response.jsonres.push( {className : activityMap.get(classe.activityId), classId : classe.classId, startTime : classe.startTime , endTime : classe.endTime , instructor : classe.instructor} )
+        }
+      })
+      res.status(200).json(response.jsonres)
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({message: error.message})
+    }
+  })
+
+
   }
   ).catch((error) => console.log("db connection error" + error));
