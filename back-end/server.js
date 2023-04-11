@@ -626,5 +626,50 @@ app.post('/futureClasses', async (req,res)=>{
   }
 })
 
+// return future classes (one week) of a user
+    app.get('/futureClass/:uId', async (req,res)=>{
+      try {
+        const userId = req.params.uId
+        const bookings = await Booking.find( { userId : userId})
+        const classIds = [];
+        bookings.forEach((booking) => {
+          classIds.push(booking.classId)
+        });
+        
+        const classesInfoJSc = { classesJson: [] }
+        // console.log(typeof classesInfoJSc);
+        // const classesInfoJSc = JSON.parse(JSON.stringify(classesInfo));
+        // const classe = await Class.findOne( { classId : "101" })
+        const promises = [];
+        const currentDate = new Date();
+        const nextWeek = new Date();
+        nextWeek.setDate(nextWeek.getDate() + 7);
+        classIds.forEach( (classId) => {
+          // const classe = await Class.findOne( { classId : classId })
+          const promise = Class.findOne( { classId : classId }).then( (classe)=>{
+            if(classe){
+            if (currentDate <= classe.startTime && classe.startTime <= nextWeek) {
+              classesInfoJSc.classesJson.push( { className: activityMap.get(classe.activityId), classId :classe.classId, location : classe.location, startTime: classe.startTime, endTime : classe.endTime, instructor : classe.instructor })
+            }
+            }
+          }).catch((err)=>{
+            console.log(err)
+          });
+          // console.log(classe); // printing as expected
+          promises.push(promise)
+        })
+        Promise.all(promises).then(() => {
+          
+          res.status(200).json(classesInfoJSc.classesJson)
+        }).catch((err) => {
+          console.log(err);
+        });
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
+
   }
   ).catch((error) => console.log("db connection error" + error));
