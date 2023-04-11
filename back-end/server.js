@@ -480,5 +480,57 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
       }
     })
 
+    // return activity to hours for a single user in the given date time range
+    app.post('/activityHoursSpent', async(req,res)=>{
+      try {
+        const userId = req.body.userId
+        const startDate = new Date(req.body.startDate)// need to check if i get a data object or just in string format
+        const endDate = new Date(req.body.endDate)
+        const bookings = await Booking.find( { userId : userId})
+        const classIds = [];
+        const response = { resJson : [] }
+        bookings.forEach((booking) => {
+          classIds.push(booking.classId)
+        });
+        // console.log("classes");
+        // console.log(classIds)
+        // classIds.forEach( (classId)=>{
+        //   console.log(classIds)
+        // })
+        const promises = []
+        activityMap.forEach( ( activityName, activityId)  =>{
+          let activityCount = 0
+          classIds.forEach( (classId)=>{
+            // console.log({ activityId : activityId , classId : classId})
+            const promise = Class.findOne ( { activityId : activityId , classId : classId} ).then( (docs)=>{
+              if(docs){
+              if( docs.startTime >=startDate && docs.endTime <= endDate ){
+                  activityCount=activityCount+ (docs.endTime-docs.startTime)/(1000 * 60 * 60);
+                  // const hoursDifference = differenceMs / (1000 * 60 * 60);
+              } 
+            }
+            })
+            promises.push(promise)
+          })
+          Promise.all(promises).then(() => {
+            // console.log("answers")
+            // console.log({activityName : activityName, activityCount: activityCount});
+            response.resJson.push( {activityName : activityName, activityHours: activityCount, caloriesBurnt : activityCount*caloriesMap.get(activityId)} )
+          })
+        })
+        Promise.all(promises).then(() => {
+          res.status(200).json(response.resJson);
+        })
+        
+        // res.status(200).json(response.resJson);
+          // setTimeout(() => {
+          //   res.status(200).json(response.resJson);
+          // }, 3000);
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
   }
   ).catch((error) => console.log("db connection error" + error));
