@@ -669,6 +669,29 @@ app.post('/futureClasses', async (req,res)=>{
         res.status(500).json({message: error.message})
       }
     })
+     // gets all classes information
+    app.get('/class',async(req,res)=>{
+      try {
+        const classes = await Class.find({})
+        res.status(200).json(classes)
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
+    //gets a specific class based on _id
+    app.get('/class/:id',async(req,res)=>{
+      try {
+        const {id} = req.params
+        const classes = await Class.findById(id)
+        res.status(200).json(classes)
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
 
 
   }
