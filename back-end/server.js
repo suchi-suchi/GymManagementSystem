@@ -692,6 +692,36 @@ app.post('/futureClasses', async (req,res)=>{
       }
     })
 
+    //to delete a specific class
+    app.delete('class/:id', async(req,res)=>{
+      try {
+        const {id} = req.params
+        const classe = await Class.findByIdAndDelete(id)
+        if(!classe){
+          res.status(404).json({message: `cannot find any class with ${id}` })
+        }
+        res.status(200).json({message: `deleted class with ${id}` })
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
+    //to update a specific class details
+    app.put('/class/:id', async(req,res)=>{
+      try {
+        const {id} = req.params
+        const classe = await Class.findByIdAndUpdate(id,req.body)
+        if(!classe){
+          res.status(404).json({message: `cannot find any class with ${id}` })
+        }
+        res.status(200).json({message: `updated class with ${id}` })
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
 
 
   }
