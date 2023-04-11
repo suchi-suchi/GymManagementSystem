@@ -467,5 +467,18 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
     }
     })
 
+    // ------------------------------- Class specific endpoints -----------------------------------
+
+    // add class 
+    app.post('/addClass',async(req,res)=>{
+      try {
+        const classe = await Class.create(req.body)
+        res.status(200).json(classe)
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
   }
   ).catch((error) => console.log("db connection error" + error));
