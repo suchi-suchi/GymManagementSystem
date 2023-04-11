@@ -722,6 +722,32 @@ app.post('/futureClasses', async (req,res)=>{
       }
     })
 
+        // ------------------------------- Booking specific endpoints -----------------------------------
+
+    // add booking 
+    app.post('/addBooking',async(req,res)=>{
+      try {
+        const booking = await Booking.create(req.body)
+        res.status(200).json(booking)
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
+    // to book a class 
+    app.post('/bookClass',async(req,res)=>{
+      try {
+        // const userId = req.body.userId
+        // const classId = req.body.classId
+        const booking = await Booking.create(req.body)
+        res.status(200).json({message:"successfully booked the class"})
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+        
+      }
+    })
 
 
   }
