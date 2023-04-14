@@ -440,55 +440,55 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
       }
     })
 
-   //gets a specific activity based on _id
-    app.get('/activity/:id',async(req,res)=>{
+    //gets a specific activity based on _id
+    app.get('/activity/:id', async (req, res) => {
       try {
-        const {id} = req.params
+        const { id } = req.params
         const activitys = await Activity.findById(id)
         res.status(200).json(activitys)
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
 
-     //to delete a specific activity
-    app.delete('activity/:id', async(req,res)=>{
-    try {
-      const {id} = req.params
-      const activity = await Activity.findByIdAndDelete(id)
-      if(!activity){
-        res.status(404).json({message: `cannot find any activity with ${id}` })
+    //to delete a specific activity
+    app.delete('activity/:id', async (req, res) => {
+      try {
+        const { id } = req.params
+        const activity = await Activity.findByIdAndDelete(id)
+        if (!activity) {
+          res.status(404).json({ message: `cannot find any activity with ${id}` })
+        }
+        res.status(200).json({ message: `deleted activity with ${id}` })
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: error.message })
       }
-      res.status(200).json({message: `deleted activity with ${id}` })
-    } catch (error) {
-      console.log(error)
-      res.status(500).json({message: error.message})
-    }
     })
 
     // ------------------------------- Class specific endpoints -----------------------------------
 
     // add class 
-    app.post('/addClass',async(req,res)=>{
+    app.post('/addClass', async (req, res) => {
       try {
         const classe = await Class.create(req.body)
         res.status(200).json(classe)
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
 
     // return activity to hours for a single user in the given date time range
-    app.post('/activityHoursSpent', async(req,res)=>{
+    app.post('/activityHoursSpent', async (req, res) => {
       try {
         const userId = req.body.userId
         const startDate = new Date(req.body.startDate)// need to check if i get a data object or just in string format
         const endDate = new Date(req.body.endDate)
-        const bookings = await Booking.find( { userId : userId})
+        const bookings = await Booking.find({ userId: userId })
         const classIds = [];
-        const response = { resJson : [] }
+        const response = { resJson: [] }
         bookings.forEach((booking) => {
           classIds.push(booking.classId)
         });
@@ -498,59 +498,59 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
         //   console.log(classIds)
         // })
         const promises = []
-        activityMap.forEach( ( activityName, activityId)  =>{
+        activityMap.forEach((activityName, activityId) => {
           let activityCount = 0
-          classIds.forEach( (classId)=>{
+          classIds.forEach((classId) => {
             // console.log({ activityId : activityId , classId : classId})
-            const promise = Class.findOne ( { activityId : activityId , classId : classId} ).then( (docs)=>{
-              if(docs){
-              if( docs.startTime >=startDate && docs.endTime <= endDate ){
-                  activityCount=activityCount+ (docs.endTime-docs.startTime)/(1000 * 60 * 60);
+            const promise = Class.findOne({ activityId: activityId, classId: classId }).then((docs) => {
+              if (docs) {
+                if (docs.startTime >= startDate && docs.endTime <= endDate) {
+                  activityCount = activityCount + (docs.endTime - docs.startTime) / (1000 * 60 * 60);
                   // const hoursDifference = differenceMs / (1000 * 60 * 60);
-              } 
-            }
+                }
+              }
             })
             promises.push(promise)
           })
           Promise.all(promises).then(() => {
             // console.log("answers")
             // console.log({activityName : activityName, activityCount: activityCount});
-            response.resJson.push( {activityName : activityName, activityHours: activityCount, caloriesBurnt : activityCount*caloriesMap.get(activityId)} )
+            response.resJson.push({ activityName: activityName, activityHours: activityCount, caloriesBurnt: activityCount * caloriesMap.get(activityId) })
           })
         })
         Promise.all(promises).then(() => {
           res.status(200).json(response.resJson);
         })
-        
+
         // res.status(200).json(response.resJson);
-          // setTimeout(() => {
-          //   res.status(200).json(response.resJson);
-          // }, 3000);
+        // setTimeout(() => {
+        //   res.status(200).json(response.resJson);
+        // }, 3000);
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
 
     //machine hours spent
-    app.post('/machineHoursSpent', async(req,res)=>{
+    app.post('/machineHoursSpent', async (req, res) => {
       const userId = req.body.userId
       const startDate = new Date(req.body.startDate)// need to check if i get a data object or just in string format
       const endDate = new Date(req.body.endDate)
       const machineToHourMap = new Map()
       const promises = []
-      machineSet.forEach((machine)=>{
-        const promise = LogMachineTracking.find({userId: userId , machineName: machine}).then((logMachinetracking)=>{
-          logMachinetracking.forEach((logMachine)=>{
+      machineSet.forEach((machine) => {
+        const promise = LogMachineTracking.find({ userId: userId, machineName: machine }).then((logMachinetracking) => {
+          logMachinetracking.forEach((logMachine) => {
             // console.log(type(logMachine.startTime),type(startDate))
             // console.log(logMachine.endTime,endDate)
-            if( (logMachine.startTime >= startDate && logMachine.endTime <= endDate)){
-              if( machineToHourMap.has(logMachine.machineName) ){
-                const hrs = machineToHourMap.get(logMachine.machineName) +  (logMachine.endTime-logMachine.startTime)/(1000 * 60 * 60)
-                machineToHourMap.set(logMachine.machineName,hrs) 
-              }else{
-                const ihrs =  (logMachine.endTime-logMachine.startTime)/(1000 * 60 * 60)
-                machineToHourMap.set(logMachine.machineName,ihrs) 
+            if ((logMachine.startTime >= startDate && logMachine.endTime <= endDate)) {
+              if (machineToHourMap.has(logMachine.machineName)) {
+                const hrs = machineToHourMap.get(logMachine.machineName) + (logMachine.endTime - logMachine.startTime) / (1000 * 60 * 60)
+                machineToHourMap.set(logMachine.machineName, hrs)
+              } else {
+                const ihrs = (logMachine.endTime - logMachine.startTime) / (1000 * 60 * 60)
+                machineToHourMap.set(logMachine.machineName, ihrs)
                 // console.log(machineToHourMap)
               }
             }
@@ -558,84 +558,84 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
         })
         promises.push(promise)
       })
-      Promise.all(promises).then(()=>{
+      Promise.all(promises).then(() => {
         // console.log("map")
         // console.log(machineToHourMap)
-        const result = { resJson : []}
-        machineToHourMap.forEach((Hrs,machineName)=>{
-          const caloriesBurnt = machineCaloriesMap.get(machineName)*Hrs
-          result.resJson.push({ machineName : machineName, hoursSpent : Hrs, caloriesBurnt : caloriesBurnt })
+        const result = { resJson: [] }
+        machineToHourMap.forEach((Hrs, machineName) => {
+          const caloriesBurnt = machineCaloriesMap.get(machineName) * Hrs
+          result.resJson.push({ machineName: machineName, hoursSpent: Hrs, caloriesBurnt: caloriesBurnt })
         })
         res.status(200).json(result.resJson)
       })
-      
-      
-  })
 
-  // return future classes (one week) based on location
-  app.get('/futureClasses/:location', async (req,res)=>{
-    try {
-      const location = req.params.location
-      const classes = await Class.find( {location: location } )
-      const response = { jsonres: [] }
-      const currentDate = new Date();
-      const nextWeek = new Date();
-      nextWeek.setDate(nextWeek.getDate() + 7);
-      classes.forEach( (classe)=>{
-        if( classe.startTime >= currentDate && classe.endTime <= nextWeek){
-          response.jsonres.push( {className : activityMap.get(classe.activityId), classId : classe.classId, startTime : classe.startTime , endTime : classe.endTime , instructor : classe.instructor} )
-        }
-      })
-      res.status(200).json(response.jsonres)
-    } catch (error) {
-      console.log(error)
-      res.status(500).json({message: error.message})
-    }
-  })
 
-// updated future class search which provides user specific booked or not booked
-app.post('/futureClasses', async (req,res)=>{
-  try {
-    const location = req.body.location
-    const userId = req.body.userId
-    const bookings = await Booking.find({userId : userId})
-    const classes =new Set()
-    bookings.forEach((booking)=>{
-      classes.add(booking.classId)
     })
-    const classess = await Class.find( {location: location } )
-    const response = { jsonres: [] }
-    const currentDate = new Date();
-    const nextWeek = new Date();
-    nextWeek.setDate(nextWeek.getDate() + 7);
-    classess.forEach( (classe)=>{
-      if(classes.has(classe.classId)){
-        if( classe.startTime >= currentDate && classe.endTime <= nextWeek){
-          response.jsonres.push( {className : activityMap.get(classe.activityId), classId: classe.classId , startTime : classe.startTime , endTime : classe.endTime , instructor : classe.instructor , booked : true })
-        }
-      }else{
-        if( classe.startTime >= currentDate && classe.endTime <= nextWeek){
-          response.jsonres.push( {className : activityMap.get(classe.activityId), classId: classe.classId , startTime : classe.startTime , endTime : classe.endTime , instructor : classe.instructor , booked : false })
-        }
+
+    // return future classes (one week) based on location
+    app.get('/futureClasses/:location', async (req, res) => {
+      try {
+        const location = req.params.location
+        const classes = await Class.find({ location: location })
+        const response = { jsonres: [] }
+        const currentDate = new Date();
+        const nextWeek = new Date();
+        nextWeek.setDate(nextWeek.getDate() + 7);
+        classes.forEach((classe) => {
+          if (classe.startTime >= currentDate && classe.endTime <= nextWeek) {
+            response.jsonres.push({ className: activityMap.get(classe.activityId), classId: classe.classId, startTime: classe.startTime, endTime: classe.endTime, instructor: classe.instructor })
+          }
+        })
+        res.status(200).json(response.jsonres)
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: error.message })
       }
     })
-    res.status(200).json(response.jsonres)
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({message: error.message})
-  }
-})
 
-// return future classes (one week) of a user
-    app.get('/futureClass/:uId', async (req,res)=>{
+    // updated future class search which provides user specific booked or not booked
+    app.post('/futureClasses', async (req, res) => {
+      try {
+        const location = req.body.location
+        const userId = req.body.userId
+        const bookings = await Booking.find({ userId: userId })
+        const classes = new Set()
+        bookings.forEach((booking) => {
+          classes.add(booking.classId)
+        })
+        const classess = await Class.find({ location: location })
+        const response = { jsonres: [] }
+        const currentDate = new Date();
+        const nextWeek = new Date();
+        nextWeek.setDate(nextWeek.getDate() + 7);
+        classess.forEach((classe) => {
+          if (classes.has(classe.classId)) {
+            if (classe.startTime >= currentDate && classe.endTime <= nextWeek) {
+              response.jsonres.push({ className: activityMap.get(classe.activityId), classId: classe.classId, startTime: classe.startTime, endTime: classe.endTime, instructor: classe.instructor, booked: true })
+            }
+          } else {
+            if (classe.startTime >= currentDate && classe.endTime <= nextWeek) {
+              response.jsonres.push({ className: activityMap.get(classe.activityId), classId: classe.classId, startTime: classe.startTime, endTime: classe.endTime, instructor: classe.instructor, booked: false })
+            }
+          }
+        })
+        res.status(200).json(response.jsonres)
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: error.message })
+      }
+    })
+
+    // return future classes (one week) of a user
+    app.get('/futureClass/:uId', async (req, res) => {
       try {
         const userId = req.params.uId
-        const bookings = await Booking.find( { userId : userId})
+        const bookings = await Booking.find({ userId: userId })
         const classIds = [];
         bookings.forEach((booking) => {
           classIds.push(booking.classId)
         });
-        
+
         const classesInfoJSc = { classesJson: [] }
         // console.log(typeof classesInfoJSc);
         // const classesInfoJSc = JSON.parse(JSON.stringify(classesInfo));
@@ -644,108 +644,108 @@ app.post('/futureClasses', async (req,res)=>{
         const currentDate = new Date();
         const nextWeek = new Date();
         nextWeek.setDate(nextWeek.getDate() + 7);
-        classIds.forEach( (classId) => {
+        classIds.forEach((classId) => {
           // const classe = await Class.findOne( { classId : classId })
-          const promise = Class.findOne( { classId : classId }).then( (classe)=>{
-            if(classe){
-            if (currentDate <= classe.startTime && classe.startTime <= nextWeek) {
-              classesInfoJSc.classesJson.push( { className: activityMap.get(classe.activityId), classId :classe.classId, location : classe.location, startTime: classe.startTime, endTime : classe.endTime, instructor : classe.instructor })
+          const promise = Class.findOne({ classId: classId }).then((classe) => {
+            if (classe) {
+              if (currentDate <= classe.startTime && classe.startTime <= nextWeek) {
+                classesInfoJSc.classesJson.push({ className: activityMap.get(classe.activityId), classId: classe.classId, location: classe.location, startTime: classe.startTime, endTime: classe.endTime, instructor: classe.instructor })
+              }
             }
-            }
-          }).catch((err)=>{
+          }).catch((err) => {
             console.log(err)
           });
           // console.log(classe); // printing as expected
           promises.push(promise)
         })
         Promise.all(promises).then(() => {
-          
+
           res.status(200).json(classesInfoJSc.classesJson)
         }).catch((err) => {
           console.log(err);
         });
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
-     // gets all classes information
-    app.get('/class',async(req,res)=>{
+    // gets all classes information
+    app.get('/class', async (req, res) => {
       try {
         const classes = await Class.find({})
         res.status(200).json(classes)
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
 
     //gets a specific class based on _id
-    app.get('/class/:id',async(req,res)=>{
+    app.get('/class/:id', async (req, res) => {
       try {
-        const {id} = req.params
+        const { id } = req.params
         const classes = await Class.findById(id)
         res.status(200).json(classes)
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
 
     //to delete a specific class
-    app.delete('class/:id', async(req,res)=>{
+    app.delete('class/:id', async (req, res) => {
       try {
-        const {id} = req.params
+        const { id } = req.params
         const classe = await Class.findByIdAndDelete(id)
-        if(!classe){
-          res.status(404).json({message: `cannot find any class with ${id}` })
+        if (!classe) {
+          res.status(404).json({ message: `cannot find any class with ${id}` })
         }
-        res.status(200).json({message: `deleted class with ${id}` })
+        res.status(200).json({ message: `deleted class with ${id}` })
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
 
     //to update a specific class details
-    app.put('/class/:id', async(req,res)=>{
+    app.put('/class/:id', async (req, res) => {
       try {
-        const {id} = req.params
-        const classe = await Class.findByIdAndUpdate(id,req.body)
-        if(!classe){
-          res.status(404).json({message: `cannot find any class with ${id}` })
+        const { id } = req.params
+        const classe = await Class.findByIdAndUpdate(id, req.body)
+        if (!classe) {
+          res.status(404).json({ message: `cannot find any class with ${id}` })
         }
-        res.status(200).json({message: `updated class with ${id}` })
+        res.status(200).json({ message: `updated class with ${id}` })
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
 
-        // ------------------------------- Booking specific endpoints -----------------------------------
+    // ------------------------------- Booking specific endpoints -----------------------------------
 
     // add booking 
-    app.post('/addBooking',async(req,res)=>{
+    app.post('/addBooking', async (req, res) => {
       try {
         const booking = await Booking.create(req.body)
         res.status(200).json(booking)
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
+        res.status(500).json({ message: error.message })
       }
     })
 
     // to book a class 
-    app.post('/bookClass',async(req,res)=>{
+    app.post('/bookClass', async (req, res) => {
       try {
         // const userId = req.body.userId
         // const classId = req.body.classId
         const booking = await Booking.create(req.body)
-        res.status(200).json({message:"successfully booked the class"})
+        res.status(200).json({ message: "successfully booked the class" })
       } catch (error) {
         console.log(error)
-        res.status(500).json({message: error.message})
-        
+        res.status(500).json({ message: error.message })
+
       }
     })
 
