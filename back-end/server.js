@@ -772,6 +772,35 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
       }
     })
 
+    //to delete a specific booking
+    app.delete('booking/:id', async (req, res) => {
+      try {
+        const { id } = req.params
+        const booking = await Booking.findByIdAndDelete(id)
+        if (!booking) {
+          res.status(404).json({ message: `cannot find any booking with ${id}` })
+        }
+        res.status(200).json({ message: `deleted booking with ${id}` })
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: error.message })
+      }
+    })
+
+    //to update a specific booking details
+    app.put('/booking/:id', async (req, res) => {
+      try {
+        const { id } = req.params
+        const booking = await Booking.findByIdAndUpdate(id, req.body)
+        if (!booking) {
+          res.status(404).json({ message: `cannot find any booking with ${id}` })
+        }
+        res.status(200).json({ message: `updated booking with ${id}` })
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: error.message })
+      }
+    })
 
   }
   ).catch((error) => console.log("db connection error" + error));
