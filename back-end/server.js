@@ -826,5 +826,32 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
       }
     })
 
+    //gets a specific logMachineTracking based on _id
+    app.get('/logMachineTracking/:id',async(req,res)=>{
+      try {
+        const {id} = req.params
+        const logMachineTrackings = await LogMachineTracking.findById(id)
+        res.status(200).json(logMachineTrackings)
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
+    //to delete a specific logMachineTracking
+    app.delete('logMachineTracking/:id', async(req,res)=>{
+      try {
+        const {id} = req.params
+        const logMachineTracking = await LogMachineTracking.findByIdAndDelete(id)
+        if(!logMachineTracking){
+          res.status(404).json({message: `cannot find any logMachineTracking with ${id}` })
+        }
+        res.status(200).json({message: `deleted logMachineTracking with ${id}` })
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
   }
   ).catch((error) => console.log("db connection error" + error));
