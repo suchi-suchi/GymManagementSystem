@@ -882,5 +882,32 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
       }
     })
 
+      // gets all checkInNOut information
+      app.get('/checkInNOut',async(req,res)=>{
+        try {
+          const checkInNOuts = await CheckInNOut.find({})
+          res.status(200).json(checkInNOuts)
+        } catch (error) {
+          console.log(error)
+          res.status(500).json({message: error.message})
+        }
+      })
+  
+      //gets a specific checkInNOut based on _id
+  
+      //null api --> db.collection.find({ column: { $type: 10 } })
+  
+      // app.post('/checkInNOut/')
+      app.get('/checkInNOut/:id',async(req,res)=>{
+        try {
+          const {id} = req.params
+          const checkInNOuts = await CheckInNOut.findById(id)
+          res.status(200).json(checkInNOuts)
+        } catch (error) {
+          console.log(error)
+          res.status(500).json({message: error.message})
+        }
+      })
+
   }
   ).catch((error) => console.log("db connection error" + error));
