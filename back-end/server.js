@@ -853,5 +853,34 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
       }
     })
 
+    //to update a specific logMachineTracking details
+    app.put('/logMachineTracking/:id', async(req,res)=>{
+      try {
+        const {id} = req.params
+        const logMachineTracking = await LogMachineTracking.findByIdAndUpdate(id,req.body)
+        if(!logMachineTracking){
+          res.status(404).json({message: `cannot find any logMachineTracking with ${id}` })
+        }
+        res.status(200).json({message: `updated logMachineTracking with ${id}` })
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
+
+    // ------------------------------- CheckInNOut specific endpoints -----------------------------------
+
+    // add checkInNOut 
+    app.post('/addcheckInNOut',async(req,res)=>{
+      try {
+        const checkInNOut = await CheckInNOut.create(req.body)
+        res.status(200).json(checkInNOut)
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
   }
   ).catch((error) => console.log("db connection error" + error));
