@@ -908,6 +908,37 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
           res.status(500).json({message: error.message})
         }
       })
+      
+      //to delete a specific checkInNOut
+    app.delete('checkInNOut/:id', async(req,res)=>{
+      try {
+        const {id} = req.params
+        const checkInNOut = await CheckInNOut.findByIdAndDelete(id)
+        if(!checkInNOut){
+          res.status(404).json({message: `cannot find any checkInNOut with ${id}` })
+        }
+        res.status(200).json({message: `deleted checkInNOut with ${id}` })
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
+    //to update a specific checkInNOut details
+    app.put('/checkInNOut/:id', async(req,res)=>{
+      try {
+        const {id} = req.params
+        const checkInNOut = await CheckInNOut.findByIdAndUpdate(id,req.body)
+        if(!checkInNOut){
+          res.status(404).json({message: `cannot find any checkInNOut with ${id}` })
+        }
+        res.status(200).json({message: `updated checkInNOut with ${id}` })
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
 
   }
   ).catch((error) => console.log("db connection error" + error));
