@@ -939,6 +939,37 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
       }
     })
 
+//gets a specific checkInNOut based on _id
 
+    //null api --> db.collection.find({ column: { $type: 10 } })
+
+    //update checkin time
+    app.post('/updateCheckIn', async(req,res)=>{
+      try {
+        const userId = req.body.uId;
+        const location = req.body.location;
+        const checkInNOut = await CheckInNOut.create({userId : userId,  checkInTime : new Date() , location: location})
+        res.status(200).json(checkInNOut)
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
+    app.get('/inOrOut/:uId', async(req,res)=>{
+      try {
+        const userId = req.params.uId
+        CheckInNOut.findOne( {userId : userId, checkOutTime : {  $exists: false  } } ).then( checkInNOutUser => {
+          if(!checkInNOutUser){
+            res.status(200).json({check : "In"})
+          }else{
+            res.status(200).json({check : "Out", location : checkInNOutUser.location})
+          }
+        })
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
   }
   ).catch((error) => console.log("db connection error" + error));
