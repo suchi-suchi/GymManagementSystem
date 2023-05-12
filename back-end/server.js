@@ -971,5 +971,50 @@ mongoose.connect("mongodb+srv://suchandranathbajjuri:Suchi7@cluster202.v83m9mk.m
         res.status(500).json({message: error.message})
       }
     })
+
+    //updates only specific row of user wheere checkin in present and check out is not present
+    app.patch('/updateCheckOut/:uId', async(req,res)=>{
+      try {
+        const userId = req.params.uId
+        CheckInNOut.findOne( {userId : userId, checkOutTime : {  $exists: false  } } ).then( checkInNOutUser => {
+          // console.log(checkInNOutUser.checkInId)
+          checkInNOutUser.checkOutTime = new Date();
+          checkInNOutUser.save();
+          res.status(200).json({ success: true, message: 'Check out time updated successfully.' })
+        })
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
+     // ------------------------------- MembershipPlan specific endpoints -----------------------------------
+
+    // add membership 
+    app.post('/addMembershipPlan',async(req,res)=>{
+      try {
+        const mambershipPlan = await MembershipPlan.create(req.body)
+        res.status(200).json(mambershipPlan)
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
+    // gets membership plan based on months provided in the url
+    app.get('/membershipPlan/:months',async(req,res)=>{
+      try {
+        const months = req.params.months
+        const membershipPlan = await MembershipPlan.findOne( { noOfMonths : months} )
+        if(!membershipPlan){
+          res.status(404).json( { message: "membership plan with given months not present"})
+        }
+        res.status(200).json(membershipPlan)
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error.message})
+      }
+    })
+
   }
   ).catch((error) => console.log("db connection error" + error));
