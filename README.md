@@ -1,9 +1,11 @@
 # Golds Gym 
 
-MadhurijGhattamaneni 016566342 <br />
-PreethijKaparaboina 016592654 <br />
-YogeshjLuckshetty 016522883 <br />
-Suchandranath Bajjuri 016420430
+| TEAM | SJSU ID |
+| --- | --- |
+| Madhuri Ghattamaneni | 016566342 |
+| Preethi Kaparaboina | 016592654 |
+| Yogesh Luckshetty |  016522883 |
+| Suchandranath Bajjuri |  016420430 |
 
 
 ## Team Members and Contribution gist:
