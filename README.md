@@ -10,10 +10,12 @@
 
 ## Team Members and Contribution gist:
 
-| Madhuri Ghattamaneni | UI Implementation and backend API implementation of Members View Activity Page, getting activity hours api of past week pages along with admin dashboard to see the number of visitors, AWS deployment and Autoscaling |
-| Preethi Kaparaboina | UI Implementation and backend implementation of Add classes, Non members page, free trials to non members, UI implementation for navigation, AWS deployment and Autoscaling |
-| Yogesh Luckshetty | Frontend and Backend API implementation - Login, register, home page, Admin page to allow check in and check out of members into gym, admin dashboard to see the numbers of hours spent by a member in the gym, Autoscaling and loadbalancer setup |
+| TEAM | Contribution |
+| --- | --- |
 | Suchandranath Bajjuri |  Front end and Backend API implementation - log machine hours, Calory count calculation logic, Book class Page Implemented previous day, week, month logics for dashboards, AWS Deployment EC2 instances, loadbalancer |
+| Yogesh Luckshetty | Frontend and Backend API implementation - Login, register, home page, Admin page to allow check in and check out of members into gym, admin dashboard to see the numbers of hours spent by a member in the gym, Autoscaling and loadbalancer setup |
+| Preethi Kaparaboina | UI Implementation and backend implementation of Add classes, Non members page, free trials to non members, UI implementation for navigation, AWS deployment and Autoscaling |
+| Madhuri Ghattamaneni | UI Implementation and backend API implementation of Members View Activity Page, getting activity hours api of past week pages along with admin dashboard to see the number of visitors, AWS deployment and Autoscaling |
 
 ## Tech stack
 REACTJS, BOOTSTRAP, NODEJS, EXPRESSJS, MONGODB
