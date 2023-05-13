@@ -1,6 +1,6 @@
 # Golds Gym 
 
-**TEAM NAME** - YSMP
+## TEAM NAME - YSMP
 
 | TEAM | SJSU ID |
 | --- | --- |
@@ -45,14 +45,12 @@ REACTJS, BOOTSTRAP, NODEJS, EXPRESSJS, MONGODB
   MERN employs only open-source technology. This feature allows a developer to use open sources to find answers to challenges that may emerge during development.
 
 ## XP Core Values Maintained by Team
-- **Simplicity**
-- We made sure to include just the most straightforward solutions that worked. In order for everyone on the team to understand the code and make changes in the future, if necessary, we made it modular and reusable. As much as possible, we have reduced code smells and included pertinent comments to our code. Our code base is straightforward, making maintenance simple.
+- **Simplicity** <br> We made sure to include just the most straightforward solutions that worked. In order for everyone on the team to understand the code and make changes in the future, if necessary, we made it modular and reusable. As much as possible, we have reduced code smells and included pertinent comments to our code. Our code base is straightforward, making maintenance simple.
 
-- **Feedback**
-- We were able to learn, adjust to the adjustments, and prevent repeating mistakes by providing and receiving regular feedback. This encouraged us to work more effectively. We made pull requests and submitted our changes to a branch during the development stage. We pushed the changes to the master branch after another team member gave the code their seal of approval. We ensured that any modifications to the master branch of the code were always stable and did not affect the code of the other team members. We were able to unify our objectives and duties thanks to ongoing feedback.
+- **Feedback** <br> We were able to learn, adjust to the adjustments, and prevent repeating mistakes by providing and receiving regular feedback. This encouraged us to work more effectively. We made pull requests and submitted our changes to a branch during the development stage. We pushed the changes to the master branch after another team member gave the code their seal of approval. We ensured that any modifications to the master branch of the code were always stable and did not affect the code of the other team members. We were able to unify our objectives and duties thanks to ongoing feedback.
 
-- **Communication**
-- Our team had good communication throughout the project. We brainstormed the idea of the project initially and divided the tasks among ourselves. We had frequent sprint meetings where we used to dicuss the issues faced by team members and retrospected what did not go well.
+- **Communication** <br> Our team had good communication throughout the project. We brainstormed the idea of the project initially and divided the tasks among ourselves. We had frequent sprint meetings where we used to dicuss the issues faced by team members and retrospected what did not go well.
+
 ## Architecture Diagram
 
 ![Screen Shot 2022-12-01 at 11.50.50 AM](https://i.imgur.com/kj1Upix.png)
