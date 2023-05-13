@@ -104,7 +104,7 @@ Our team had good communication throughout the project. We brainstormed the idea
 ![dashboard-3](https://github.com/gopinathsjsu/team-project-ysmp/assets/127645297/3bacd3b1-d4f8-4e4d-878d-f934d0381df5)
 
 ## Sprint BurnDown Chart
-[Sprint BurnDown Chart]((https://docs.google.com/spreadsheets/d/1u7J8boGu-aP9X6Baam-sD7kROVv2e1EMXlD0hC_OBE8/edit#gid=303579835))
+[Sprint BurnDown Chart](https://docs.google.com/spreadsheets/d/1u7J8boGu-aP9X6Baam-sD7kROVv2e1EMXlD0hC_OBE8/edit#gid=303579835)
 
 ## Project Journal
 [Project Journal](https://docs.google.com/document/d/1SsX60HI1k-GzTQF-vC-i6G2Ip5XlY6zxNvhu_C6i96U/edit#heading=h.vi6tyc9zp40a)
