@@ -10,10 +10,10 @@
 
 ## Team Members and Contribution gist:
 
-Suchandranath Bajjuri: Scrum Master, AWS Deployment EC2 instances, loadbalancer, Backend API implementation - Enroll classes, log machine hours, Calory count calculation logic, Dash board Apis, UI Integration for Dashboards, Implemented previous day, week, month logics for dashboards.<br />
-Yogesh Luckshetty: Autoscaling and loadbalancer setup, Backend API implementation - Getting Machine hours of past week,  UI for home page, UI implementation for admin dashboards login, Register add schedule, update schedule .<br />
-Preethi Kaparaboina: UI Implementation - AWS Deployment, Add classes, class enrollment, signup and login integration on backend, integrated sign up and profile page on front end, UI implementation for navigation.<br />
-Madhuri Ghattamaneni: UI Implementation and integration of flight schedule page, getting activity hours api of past week, UI implementation for admin dashboards, add membership page, AWS Autoscaling.<br />
+| Madhuri Ghattamaneni | UI Implementation and backend API implementation of Members View Activity Page, getting activity hours api of past week pages along with admin dashboard to see the number of visitors, AWS deployment and Autoscaling |
+| Preethi Kaparaboina | UI Implementation and backend implementation of Add classes, Non members page, free trials to non members, UI implementation for navigation, AWS deployment and Autoscaling |
+| Yogesh Luckshetty | Frontend and Backend API implementation - Login, register, home page, Admin page to allow check in and check out of members into gym, admin dashboard to see the numbers of hours spent by a member in the gym, Autoscaling and loadbalancer setup |
+| Suchandranath Bajjuri |  Front end and Backend API implementation - log machine hours, Calory count calculation logic, Book class Page Implemented previous day, week, month logics for dashboards, AWS Deployment EC2 instances, loadbalancer |
 
 ## Tech stack
 REACTJS, BOOTSTRAP, NODEJS, EXPRESSJS, MONGODB
