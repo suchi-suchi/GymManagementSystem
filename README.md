@@ -2,8 +2,7 @@
 
 
 ## Tech stack
-
-![](https://img.shields.io/badge/ReactJs-FFD43B?style=for-the-badge&logo=react&logoColor=darkgreen) ![](https://img.shields.io/badge/Bootstrap-FF6F00?style=for-the-badge&logo=BootStrap&logoColor=white) ![](https://img.shields.io/badge/NodeJs-F7931E?style=for-the-badge&logo=nodejs&logoColor=white) ![](https://img.shields.io/badge/ExpressJs-654FF0?style=for-the-badge&logo=ExpressJs&logoColor=white)![](https://img.shields.io/badge/MongoDb-777BB4?style=for-the-badge&logo=MongoDB&logoColor=white)
+REACTJS, BOOTSTRAP, NODEJS, EXPRESSJS, MONGODB
 
 ## Design Choices:
 
