@@ -42,7 +42,8 @@ Our team had good communication throughout the project. We brainstormed the idea
 
 ## Component Diagram
 
-![WhatsApp Image 2023-05-12 at 5 15 23 PM](https://github.com/gopinathsjsu/team-project-ysmp/assets/127645297/5ea585b9-14eb-47d6-af23-6ddf2ea9a88e)
+![WhatsApp Image 2023-05-12 at 5 15 23 PM](https://github.com/gopinathsjsu/team-project-ysmp/assets/127645297/6bfe60b6-0506-4a16-8115-85a2a38f9752)
+
 
 ## Deployment Diagram
 
