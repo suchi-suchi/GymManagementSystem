@@ -1,5 +1,7 @@
 # Golds Gym 
 
+**TEAM NAME** - YSMP
+
 | TEAM | SJSU ID |
 | --- | --- |
 | Madhuri Ghattamaneni | 016566342 |
@@ -43,14 +45,14 @@ REACTJS, BOOTSTRAP, NODEJS, EXPRESSJS, MONGODB
   MERN employs only open-source technology. This feature allows a developer to use open sources to find answers to challenges that may emerge during development.
 
 ## XP Core Values Maintained by Team
-- Simplicity
-We made sure to include just the most straightforward solutions that worked. In order for everyone on the team to understand the code and make changes in the future, if necessary, we made it modular and reusable. As much as possible, we have reduced code smells and included pertinent comments to our code. Our code base is straightforward, making maintenance simple.
+- **Simplicity**
+- We made sure to include just the most straightforward solutions that worked. In order for everyone on the team to understand the code and make changes in the future, if necessary, we made it modular and reusable. As much as possible, we have reduced code smells and included pertinent comments to our code. Our code base is straightforward, making maintenance simple.
 
-- Feedback
-We were able to learn, adjust to the adjustments, and prevent repeating mistakes by providing and receiving regular feedback. This encouraged us to work more effectively. We made pull requests and submitted our changes to a branch during the development stage. We pushed the changes to the master branch after another team member gave the code their seal of approval. We ensured that any modifications to the master branch of the code were always stable and did not affect the code of the other team members. We were able to unify our objectives and duties thanks to ongoing feedback.
+- **Feedback**
+- We were able to learn, adjust to the adjustments, and prevent repeating mistakes by providing and receiving regular feedback. This encouraged us to work more effectively. We made pull requests and submitted our changes to a branch during the development stage. We pushed the changes to the master branch after another team member gave the code their seal of approval. We ensured that any modifications to the master branch of the code were always stable and did not affect the code of the other team members. We were able to unify our objectives and duties thanks to ongoing feedback.
 
-- Communication
-Our team had good communication throughout the project. We brainstormed the idea of the project initially and divided the tasks among ourselves. We had frequent sprint meetings where we used to dicuss the issues faced by team members and retrospected what did not go well.
+- **Communication**
+- Our team had good communication throughout the project. We brainstormed the idea of the project initially and divided the tasks among ourselves. We had frequent sprint meetings where we used to dicuss the issues faced by team members and retrospected what did not go well.
 ## Architecture Diagram
 
 ![Screen Shot 2022-12-01 at 11.50.50 AM](https://i.imgur.com/kj1Upix.png)
@@ -69,39 +71,39 @@ Our team had good communication throughout the project. We brainstormed the idea
 
 ### Homepage
 
-- should display the homepage with the information about the gym, available memberships and class types.
-- should display login page on clicking login button
-- should display register page on clicking the register button
+- Should display the homepage with the information about the gym, available memberships and class types.
+- Should display login page on clicking login button
+- Should display register page on clicking the register button
 
 ### Non Member View
 
-- should display screen with information to enroll for membership 
+- Should display screen with information to enroll for membership 
 
 ### Member View
 
-- should be able to view  list of his class schedule for the next week.
-- should be able to view his activities in the given time frame with respective to class and machine in terms of time spent and calories burnt.
-- should be able to book available class in specific location from the list.
-- should be able to log hours for the activity done the specific machine by giving start and end time.
+- Should be able to view  list of his class schedule for the next week.
+- Should be able to view his activities in the given time frame with respective to class and machine in terms of time spent and calories burnt.
+- Should be able to book available class in specific location from the list.
+- Should be able to log hours for the activity done the specific machine by giving start and end time.
 
 ### Signin - Member
 
 - Member upon filling details should be able to sign in
 - Member are redirect to my classes page on successful login
-- should display error in case of wrong credentiials.
+- Should display error in case of wrong credentiials.
 
 ### Admin
 
-- should be able to login successfully.
-- should be able to enroll new users.
-- should be able to check In / check Out specific user.
-- should be able to give free trials to the users.
-- should be able to view analytics dashboard
+- Should be able to login successfully.
+- Should be able to enroll new users.
+- Should be able to check In / check Out specific user.
+- Should be able to give free trials to the users.
+- Should be able to view analytics dashboard
 
 ### Analytics Dashboard
- -  dashboard to display pie chart for number of members enrolled in specific location.
- -  dashboard to display hours spent in gym in specific location for time frame of week and 30 days.
- -  dashboard to display number of visitors for the gym on the specific day and location.
+ -  Dashboard to display pie chart for number of members enrolled in specific location.
+ -  Dashboard to display hours spent in gym in specific location for time frame of week and 30 days.
+ -  Dashboard to display number of visitors for the gym on the specific day and location.
 
 ## UI Wireframes
 ![First Page-wf](https://github.com/gopinathsjsu/team-project-ysmp/assets/127645297/78d341a5-9d2e-48fd-bb39-1b17d913393c)
